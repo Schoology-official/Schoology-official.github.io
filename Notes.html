@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Muhammad's Homepage</title>
+  <link rel="icon" type="image/x-icon" href="https://codehs.com/uploads/bf9de078f906394c4a22000fb7c6a8b5">
+  <style>
+    body {
+      background-image: linear-gradient(Lightblue, #C3B1E1, lightpink, lightpink, #FFFFED, #FFD580, #90ee90);
+      text-align: center;
+      font-family: 'Times New Roman', serif;
+    }
+    .album-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 10px;
+      margin: 20px auto;
+    }
+    .album-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .play-pause-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('https://jccdallas.org/wp-content/uploads/2020/06/Spotify-Play-Button.png');
+      background-size: cover;
+      width: 100px;
+      height: 100px;
+      border: none;
+      cursor: pointer;
+    }
+    .pause-btn-icon {
+      background-image: url('https://codehs.com/uploads/f465f613033347a42460ea0525b65b86');
+    }
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background-color: #888;
+      border-radius: 5px;
+    }
+    .progress {
+      height: 100%;
+      background-color: #1DB954;
+      border-radius: 5px;
+    }
+    .album-progress {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 0%;
+      height: 10px;
+      background-color: #1DB954;
+      border-radius: 5px;
+    }
+    .time-left {
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      color: white;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Muhammad's Homepage</h1>
+
+  <div class="album-container">
+    <img class="album-image" src="Designer (1).png" alt="Album Cover">
+    <button class="play-pause-btn play-btn-icon" onclick="togglePlayPause()"></button>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+      <div class="album-progress" id="albumProgress"></div>
+    </div>
+    <div class="time-left" id="timeLeft"></div>
+  </div>
+
+  <audio id="audio" src="https://codehs.com/uploads/11c205a0f23f4abaf9dd45a44b1970c9"></audio>
+
+  <script>
+    var audio = document.getElementById("audio");
+    var button = document.querySelector('.play-pause-btn');
+    var progressBar = document.querySelector('.progress-bar');
+
+    function togglePlayPause() {
+      if (audio.paused) {
+        audio.play();
+        button.classList.remove('play-btn-icon');
+        button.classList.add('pause-btn-icon');
+        updateProgressBar();
+      } else {
+        audio.pause();
+        button.classList.remove('pause-btn-icon');
+        button.classList.add('play-btn-icon');
+      }
+    }
+
+    audio.onpause = function() {
+      button.classList.remove('pause-btn-icon');
+      button.classList.add('play-btn-icon');
+    };
+
+    audio.onended = function() {
+      button.classList.remove('pause-btn-icon');
+      button.classList.add('play-btn-icon');
+    };
+
+    audio.ontimeupdate = function() {
+      updateProgressBar();
+    };
+
+    function updateProgressBar() {
+      var progress = (audio.currentTime / audio.duration) * 100;
+      progressBar.querySelector('.progress').style.width = progress + "%";
+      var albumProgressWidth = (progressBar.clientWidth / progressBar.parentNode.clientWidth) * progress;
+      document.getElementById('albumProgress').style.width = albumProgressWidth + "%";
+      
+      var timeLeft = audio.duration - audio.currentTime;
+      var minutes = Math.floor(timeLeft / 60);
+      var seconds = Math.floor(timeLeft % 60);
+      var currentTime = Math.floor(audio.currentTime);
+      var currentMinutes = Math.floor(currentTime / 60);
+      var currentSeconds = Math.floor(currentTime % 60);
+      document.getElementById('timeLeft').innerText = currentMinutes + ':' + (currentSeconds < 10 ? '0' : '') + currentSeconds;
+    }
+  </script>
+</body>
+</html>

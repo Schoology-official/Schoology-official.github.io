@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Analytics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #monitor, #passwordPrompt {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            display: none; /* Hidden by default */
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #ff4c4c;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e04343;
+        }
+
+        .danger-sign {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        input[type="password"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: calc(100% - 20px);
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<div id="passwordPrompt">
+    <h2>Enter Password to Access Analytics</h2>
+    <form id="passwordForm">
+        <input type="password" id="password" placeholder="Enter password" required />
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<div id="monitor">
+    <h2>Website Analytics</h2>
+    <div>
+        <h3>Main Page Users: <span id="mainPageCount">0</span></h3>
+        <h3>Total Games Pages Users: <span id="gamePageCount">0</span></h3>
+        <h3>Total Utilities Users: <span id="utilitiesCount">0</span></h3>
+        <h3>Total Users: <span id="totalCount">0</span></h3>
+    </div>
+    <button onclick="triggerLockdown()">
+        <span class="danger-sign">🚨</span> Lockdown
+    </button>
+</div>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getDatabase, ref, onValue, runTransaction, set } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        databaseURL: "YOUR_DATABASE_URL",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID",
+        measurementId: "YOUR_MEASUREMENT_ID"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Password protection logic
+    document.getElementById('passwordForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const password = document.getElementById('password').value;
+        if (password === 'revival2') {
+            document.getElementById('passwordPrompt').style.display = 'none';
+            document.getElementById('monitor').style.display = 'block';
+            updateCounts();
+            checkLockdown();
+        } else {
+            alert('Incorrect password!');
+        }
+    });
+
+    // Listen for page counts
+    function updateCounts() {
+        const mainPageCountRef = ref(database, '/pages/mainPage');
+        const gamePagesRef = ref(database, '/pages/gamePages');
+        const utilitiesPagesRef = ref(database, '/pages/utilities');
+        const totalCountRef = ref(database, '/totalUsers');
+
+        onValue(mainPageCountRef, (snapshot) => {
+            document.getElementById('mainPageCount').innerText = snapshot.val() || 0;
+        });
+
+        onValue(gamePagesRef, (snapshot) => {
+            const gamePagesData = snapshot.val() || {};
+            const totalGamePages = Object.values(gamePagesData).reduce((sum, count) => sum + count, 0);
+            document.getElementById('gamePageCount').innerText = totalGamePages;
+        });
+
+        onValue(utilitiesPagesRef, (snapshot) => {
+            const utilitiesData = snapshot.val() || {};
+            const totalUtilities = Object.values(utilitiesData).reduce((sum, count) => sum + count, 0);
+            document.getElementById('utilitiesCount').innerText = totalUtilities;
+        });
+
+        onValue(totalCountRef, (snapshot) => {
+            document.getElementById('totalCount').innerText = snapshot.val() || 0;
+        });
+    }
+
+    // Trigger lockdown
+    function triggerLockdown() {
+        const lockdownRef = ref(database, '/lockdown');
+        set(lockdownRef, true);
+    }
+
+    // Check for lockdown state
+    function checkLockdown() {
+        const lockdownRef = ref(database, '/lockdown');
+        onValue(lockdownRef, (snapshot) => {
+            if (snapshot.val() === true) {
+                alert('The site is in lockdown mode.');
+                window.location.href = 'locked.html';  // Redirect to a lockdown page
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

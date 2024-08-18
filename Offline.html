@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Multiple Websites</title>
+</head>
+<body>
+    <button onclick="openWebsites()">Open Websites</button>
+
+    <script>
+        function openWebsites() {
+            const urls = [
+                'https://schoology.netlify.app/toolkit',
+                'https://schoology.netlify.app/typewriter',
+                'https://schoology.netlify.app/polytrack',
+                'https://schoology.netlify.app/staggeringbeauty',
+                'https://schoology.netlify.app/testing'
+            ];
+            urls.forEach(url => {
+                window.open(url, '_blank');
+            });
+        }
+    </script>
+</body>
+</html>

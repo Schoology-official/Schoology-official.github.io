@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updates</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0; /* Light grey background */
+            color: #333; /* Dark text */
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .notebook {
+            background-color: white;
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 40px; /* Add bottom margin for spacing */
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .notebook-content {
+            position: relative;
+            z-index: 2; /* Ensure text is above lines */
+            text-align: left;
+            padding-left: 60px; /* Adjust to move text slightly to the right */
+        }
+        .update-item {
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 40px; /* Adjust to align text next to the line */
+        }
+        .update-item h2 {
+            font-size: 1.5em;
+            margin: 10px 0;
+            position: relative;
+            left: -40px; /* Adjust to align text next to the line */
+        }
+        .update-item p {
+            font-size: 1em;
+            margin: 5px 0;
+        }
+        .notebook-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                white 0px,
+                white 28px,
+                #e0e0e0 28px,
+                #e0e0e0 29px
+            );
+            z-index: 1; /* Ensure background lines are behind text */
+        }
+        .notebook-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 40px;
+            width: 2px;
+            background-color: #ff4d4d;
+            z-index: 1; /* Ensure red line is behind text */
+        }
+        .pastel-background {
+            background-color: #ffe5ec;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px; /* Space between sections */
+        }
+        .pastel-background:nth-of-type(2) {
+            background-color: #e5f7ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="pastel-background">
+        <h1>Updates</h1>
+        <div class="notebook">
+            <div class="notebook-background"></div>
+            <div class="notebook-line"></div>
+            <div class="notebook-content">
+                <div class="update-item">
+                    <h2>New Games</h2>
+                    <p>Added 90+ games.</p>
+                </div>
+                <div class="update-item">
+                    <h2>Added a Hacker console</h2>
+                    <p>Gonna be used for the proxy</p>
+                </div>
+                <div class="update-item">
+                    <h2>Update 3</h2>
+                    <p>Description of update 3.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pastel-background">
+        <h1>Coming Soon</h1>
+        <div class="notebook">
+            <div class="notebook-background"></div>
+            <div class="notebook-line"></div>
+            <div class="notebook-content">
+                <div class="update-item">
+                    <h2>Opens in a about:blank</h2>
+                    <p>Soon most of the pages will open in a about:blank, A about:blank page is basically a page with nothing on it, and it does not show up in your history, this is experimental.</p>
+                </div>
+                <div class="update-item">
+                    <h2>New games will be on website soon</h2>
+                    <p>Currently most of the games are not shown on the buttons becuase of my lazy self, soon wil be.</p>
+                </div>
+                <div class="update-item">
+                    <h2>Will make a proxy server</h2>
+                    <p>Im gonna make a proxy server, its basically gonna be like a browser that does'nt show up in your history</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pastel-background">
+        <h1>Coming Soon (Extra)</h1>
+        <div class="notebook">
+            <div class="notebook-background"></div>
+            <div class="notebook-line"></div>
+            <div class="notebook-content">
+                <div class="update-item">
+                    <h2>Opens in a about:blank</h2>
+                    <p>Soon most of the pages will open in a about:blank, A about:blank page is basically a page with nothing on it, and it does not show up in your history, this is experimental.</p>
+                </div>
+                <div class="update-item">
+                    <h2>New games will be on website soon</h2>
+                    <p>Currently most of the games are not shown on the buttons becuase of my lazy self, soon wil be.</p>
+                </div>
+                <div class="update-item">
+                    <h2>Will make a proxy server</h2>
+                    <p>Im gonna make a proxy server, its basically gonna be like a browser that does'nt show up in your history</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

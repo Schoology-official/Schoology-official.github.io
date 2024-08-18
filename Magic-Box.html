@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            background: white;
+        }
+        .box{
+            height: 200px;
+            width: 200px;
+            border: 2px solid black;
+            border:  all  o.4 ese;
+        }
+        input{
+            background-color: rgb(255, 255, 255);
+            height: 25px;
+            width: 200px;
+            margin-top: 10px;
+        }
+        #circle {
+    border: 2px solid rgb(48, 48, 48);
+    margin: 30px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #ffffff; /* Default background color */
+    cursor: pointer;
+  }
+        </style>
+</head>
+<body>
+    <center>
+    <div class="box"></div>
+    <input type="text"/>
+</center>
+
+<center>
+    <div id="circle"></div>
+    <input type="color" id="color">
+    </center>
+    <script>
+    let circle = document.getElementById("circle");
+    let colorInput = document.getElementById("color");
+    
+    colorInput.addEventListener("change", () => {
+      circle.style.backgroundColor = colorInput.value;
+    });
+    </script>
+
+    <script>let box =document.querySelector("div");
+        input =document.querySelector("input");
+        
+        input.addEventListener("input",()=>{
+            box.style.borderRadius=input.value;
+            box.style.background=input.value;
+        });</script>
+</body>
+</html>

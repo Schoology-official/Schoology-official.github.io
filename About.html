@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #f0f8ff;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: linear-gradient(145deg, #1c1c1c, #2c2c2c);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #89c9f9;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Styling the Paragraphs */
+        p::first-line {
+            font-weight: bold;
+            color: #89c9f9;
+        }
+
+        /* Adding Visuals */
+        .divider {
+            height: 4px;
+            background: #89c9f9;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        /* Button Styling */
+        .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #89c9f9;
+            color: #121212;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #7ab8e5;
+        }
+
+        /* Adding Media Query */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>About Me</h1>
+        <div class="divider"></div>
+        <p>My name is Muhammad Mughal, and I am the Mastermind developer behind this game website.This is the second version of "Enter The Html Code" whitch was the first version and album of my game website there will probably be a third version in the future.  Launched on June 9 at 9:51 AM, this platform is dedicated to creating engaging and interactive gaming experiences.</p>
+        <p>As the sole coder, I am committed to continuously enhancing the site with new features and content. My focus is on providing a seamless and enjoyable user experience, with a strong emphasis on entertainment.</p>
+        <p>Thank you for visiting the site. I look forward to bringing you more exciting updates and developments in the future.</p>
+        <a href="index.html" class="cta-button">Explore More</a>
+    </div>
+</body>
+</html>

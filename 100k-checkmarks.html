@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100,000 Checkmarks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        #title {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #description {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        #counter {
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        #checkbox-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+            gap: 2px;
+            width: 100%;
+            max-width: 800px;
+            height: 80vh;
+            overflow-y: scroll;
+        }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="title">100,000 Checkmarks</div>
+    <p id="description">These checkmarks are live and anyone can check any box. Your goal is to check them all.</p>
+    <div id="counter">Checked: 0 / 100,000</div>
+    <div id="checkbox-container"></div>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
+        import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAsVJeotg85dxUn_LC5jDryg0qZmhTkkl4",
+            authDomain: "k-checkmarks.firebaseapp.com",
+            projectId: "k-checkmarks",
+            storageBucket: "k-checkmarks.appspot.com",
+            messagingSenderId: "880402394733",
+            appId: "1:880402394733:web:eb8584de5609c388ca1964",
+            measurementId: "G-NC0MD28430"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('checkbox-container');
+            const counterDisplay = document.getElementById('counter');
+            let checkedCount = 0;
+
+            // Function to update the counter display
+            const updateCounter = () => {
+                counterDisplay.textContent = `Checked: ${checkedCount} / 100,000`;
+            };
+
+            for (let i = 0; i < 100000; i++) {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `checkbox-${i}`;
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        const checkboxRef = ref(database, 'checkboxes/' + checkbox.id);
+                        set(checkboxRef, true);
+                    }
+                });
+                container.appendChild(checkbox);
+            }
+
+            // Listen for changes in the database
+            const checkboxesRef = ref(database, 'checkboxes');
+            onValue(checkboxesRef, (snapshot) => {
+                const checkboxes = snapshot.val();
+                checkedCount = 0;
+                if (checkboxes) {
+                    for (let id in checkboxes) {
+                        const checkbox = document.getElementById(id);
+                        if (checkboxes[id]) {
+                            checkbox.checked = true;
+                            checkbox.disabled = true;
+                            checkedCount++;
+                        }
+                    }
+                }
+                updateCounter();
+
+                // Check if all checkboxes are checked
+                if (checkedCount === 100000) {
+                    // Reset checkboxes
+                    remove(checkboxesRef).then(() => {
+                        // Reload the page after reset
+                        window.location.reload();
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iPhone Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      background-color: #add8e6; /* Baby blue background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .calculator {
+      background: none; /* Removed black background */
+      border-radius: 50px;
+      color: white;
+      width: 563px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden; /* Prevent overflow */
+    }
+
+    .value {
+      font-size: 130px;
+      font-weight: 300;
+      height: 158px;
+      margin-bottom: 20px;
+      margin-right: 20px;
+      text-align: right;
+      overflow: hidden; /* Prevent overflow */
+      color: black; /* Set text color to black */
+    }
+
+
+
+    .buttons-container {
+      display: grid;
+      grid-gap: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+    }
+
+    .button {
+      align-items: center;
+      background: #333;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      font-size: 45px;
+      height: 110px;
+      justify-content: center;
+      transition: filter .3s;
+      width: 110px;
+    }
+
+    .button.function {
+      color: black;
+      background: #a5a5a5;
+    }
+
+    .button.operator {
+      background: #f1a33c;
+    }
+
+    .button.number-0 {
+      border-radius: 55px;
+      grid-column: 1 / span 2;
+      justify-content: flex-start;
+      padding-left: 43px;
+      width: 250px;
+    }
+
+    .button:active,
+    .button:focus {
+      filter: brightness(120%);
+    }
+
+    .bottom {
+      display: none; /* Removed the white line at the bottom */
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="value">0</div>
+    <div class="buttons-container">
+      <div class="button function ac">AC</div>
+      <div class="button function pm">±</div>
+      <div class="button function percent">%</div>
+      <div class="button operator division">÷</div>
+      <div class="button number-7">7</div>
+      <div class="button number-8">8</div>
+      <div class="button number-9">9</div>
+      <div class="button operator multiplication">×</div>
+      <div class="button number-4">4</div>
+      <div class="button number-5">5</div>
+      <div class="button number-6">6</div>
+      <div class="button operator subtraction">−</div>
+      <div class="button number-1">1</div>
+      <div class="button number-2">2</div>
+      <div class="button number-3">3</div>
+      <div class="button operator addition">+</div>
+      <div class="button number-0">0</div>
+      <div class="button decimal">.</div>
+      <div class="button operator equal">=</div>
+    </div>
+  </div>
+
+  <script>
+    const elements = {
+      value: document.querySelector('.value'),
+      ac: document.querySelector('.ac'),
+      pm: document.querySelector('.pm'),
+      percent: document.querySelector('.percent'),
+      division: document.querySelector('.division'),
+      multiplication: document.querySelector('.multiplication'),
+      subtraction: document.querySelector('.subtraction'),
+      addition: document.querySelector('.addition'),
+      equal: document.querySelector('.equal'),
+      decimal: document.querySelector('.decimal'),
+      numberElArray: Array.from(document.querySelectorAll('.button:not(.function):not(.operator):not(.decimal)'))
+    };
+
+    let currentValue = '0';
+    let operator = null;
+    let waitingForSecondOperand = false;
+    let firstOperand = null;
+
+    const updateDisplay = () => {
+      elements.value.textContent = currentValue;
+    };
+
+    const inputDigit = (digit) => {
+      if (waitingForSecondOperand) {
+        currentValue = digit;
+        waitingForSecondOperand = false;
+      } else {
+        currentValue = currentValue === '0' ? digit : currentValue + digit;
+      }
+      updateDisplay();
+    };
+
+    const inputDecimal = () => {
+      if (!currentValue.includes('.')) {
+        currentValue += '.';
+        updateDisplay();
+      }
+    };
+
+    const handleOperator = (nextOperator) => {
+      const inputValue = parseFloat(currentValue);
+      if (firstOperand === null) {
+        firstOperand = inputValue;
+      } else if (operator && !waitingForSecondOperand) {
+        operator = nextOperator;
+        return;
+      } else if (operator) {
+        const result = performCalculation(firstOperand, inputValue);
+        currentValue = result.toString();
+        firstOperand = result;
+        updateDisplay();
+      }
+      waitingForSecondOperand = true;
+      operator = nextOperator;
+    };
+
+    const performCalculation = (first, second) => {
+      if (operator === 'addition') {
+        return first + second;
+      } else if (operator === 'subtraction') {
+        return first - second;
+      } else if (operator === 'multiplication') {
+        return first * second;
+      } else if (operator === 'division') {
+        return first / second;
+      }
+      return second;
+    };
+
+    elements.ac.addEventListener('click', () => {
+      currentValue = '0';
+      operator = null;
+      waitingForSecondOperand = false;
+      firstOperand = null;
+      updateDisplay();
+    });
+
+    elements.numberElArray.forEach((numberEl) => {
+      numberEl.addEventListener('click', () => {
+        inputDigit(numberEl.textContent);
+      });
+    });
+
+    elements.decimal.addEventListener('click', inputDecimal);
+
+    ['addition', 'subtraction', 'multiplication', 'division'].forEach((operation) => {
+      elements[operation].addEventListener('click', () => {
+        handleOperator(operation);
+      });
+    });
+
+    elements.equal.addEventListener('click', () => {
+      if (operator && !waitingForSecondOperand) {
+        const inputValue = parseFloat(currentValue);
+        const result = performCalculation(firstOperand, inputValue);
+        currentValue = result.toString();
+        firstOperand = result;
+        updateDisplay();
+        operator = null;
+      }
+    });
+  </script>
+</body>
+</html>

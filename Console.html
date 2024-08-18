@@ -1,0 +1,138 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell Console</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #0f0;
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .console {
+            width: 80%;
+            height: 60%;
+            border: 2px solid #0f0;
+            background: #000;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .console-output {
+            height: calc(100% - 30px);
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .console-input {
+            border: none;
+            background: #000;
+            color: #0f0;
+            width: 100%;
+            padding: 5px;
+            font-size: 1em;
+            outline: none;
+        }
+
+        .binary-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .binary-background canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="binary-background">
+        <canvas id="binaryCanvas" width="1217" height="991"></canvas>
+    </div>
+
+    <div class="console" id="console">
+        <div class="console-output" id="output"></div>
+        <input type="text" class="console-input" id="input" placeholder="Type command here..." autofocus="">
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const input = document.getElementById('input');
+        const canvas = document.getElementById('binaryCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Binary code falling effect
+        const fontSize = 20;
+        const columns = canvas.width / fontSize;
+        const ypos = Array.from({ length: columns }).map(() => Math.random() * canvas.height);
+
+        function drawBinary() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0f0';
+            ctx.font = `${fontSize}px monospace`;
+
+            ypos.forEach((y, i) => {
+                const text = Math.random() > 0.5 ? '1' : '0';
+                const x = i * fontSize;
+                ctx.fillText(text, x, y);
+
+                if (y > canvas.height + Math.random() * 10000) {
+                    ypos[i] = 0;
+                } else {
+                    ypos[i] = y + fontSize;
+                }
+            });
+        }
+
+        setInterval(drawBinary, 100);
+
+        function handleCommand(command) {
+            switch (command.trim().toLowerCase()) {
+                case 'sudo youtube':
+                    window.location.href = 'Youtube-Viewer.html';
+                    break;
+                case 'sudo wikipedia':
+                    window.location.href = 'wikipedia.html';
+                    break;
+                default:
+                    output.innerHTML += `<div>Unknown command: ${command}</div>`;
+            }
+        }
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleCommand(input.value);
+                input.value = '';
+            }
+        });
+
+        // Initial focus
+        input.focus();
+    </script>
+
+
+</body></html>
